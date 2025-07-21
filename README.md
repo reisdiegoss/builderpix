@@ -11,7 +11,7 @@
   <a href="https://github.com/reisdiegoss/builderpix/blob/main/LICENSE">
     <img src="https://img.shields.io/github/license/reisdiegoss/builderpix?style=for-the-badge&label=Licen%C3%A7a" alt="Licença">
   </a>
-  <a href="https://builderpix.dominio.com.br">
+  <a href="https://builderpix.builderapi.com.br">
     <img src="https://img.shields.io/badge/Site-Acessar-blue?style=for-the-badge&logo=google-chrome&logoColor=white" alt="Acessar o Site">
   </a>
 </p>
