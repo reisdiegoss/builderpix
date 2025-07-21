@@ -1,9 +1,79 @@
-BuilderPIX - Gerador de QR Code e Payload PIX<p align="center"><!-- Badges --><a href="https://github.com/reisdiegoss/builderpix"><img src="https://www.google.com/search?q=https://img.shields.io/github/stars/reisdiegoss/builderpix%3Fstyle%3Dfor-the-badge%26logo%3Dgithub%26label%3DStars" alt="GitHub Stars"></a><a href="https://www.google.com/search?q=https://hub.docker.com/r/builderapi/builderpix"><img src="https://www.google.com/search?q=https://img.shields.io/docker/pulls/builderapi/builderpix%3Fstyle%3Dfor-the-badge%26logo%3Ddocker%26label%3DPulls" alt="Docker Pulls"></a><a href="https://www.google.com/search?q=https://github.com/reisdiegoss/builderpix/blob/main/LICENSE"><img src="https://www.google.com/search?q=https://img.shields.io/github/license/reisdiegoss/builderpix%3Fstyle%3Dfor-the-badge%26label%3DLicen%25C3%25A7a" alt="Licença"></a><a href="https://builderpix.dominio.com.br"><img src="https://www.google.com/search?q=https://img.shields.io/badge/Site-Acessar-blue%3Fstyle%3Dfor-the-badge%26logo%3Dgoogle-chrome%26logoColor%3Dwhite" alt="Acessar o Site"></a></p>BuilderPIX é uma aplicação Node.js completa que oferece uma interface web e uma API RESTful para gerar dinamicamente QR Codes e payloads "Copia e Cola" para transações PIX, seguindo as especificações do Banco Central do Brasil.? FuncionalidadesInterface Web Intuitiva: Um frontend simples para preencher os dados e gerar o PIX visualmente.API RESTful Robusta: Um endpoint /api/generate para integrações, permitindo que outros sistemas gerem códigos PIX.Geração de QR Code: Retorna a imagem do QR Code em formato Base64.Payload "Copia e Cola": Retorna o payload (BR Code) completo para transações.Sem Dependências Externas: A lógica de geração do PIX é totalmente contida na aplicação.Pronto para Orquestração: Inclui exemplos para rodar com Docker Swarm e Traefik como proxy reverso.?? Como Usar1. Pré-requisitosNode.js (v18 ou superior)Docker (para rodar em contêiner)2. Rodando Localmente (Para Desenvolvimento)Primeiro, clone o repositório:git clone [https://github.com/reisdiegoss/builderpix.git](https://github.com/reisdiegoss/builderpix.git)
+# BuilderPIX - Gerador de QR Code e Payload PIX
+
+<p align="center">
+  <!-- Badges -->
+  <a href="https://github.com/reisdiegoss/builderpix">
+    <img src="https://img.shields.io/github/stars/reisdiegoss/builderpix?style=for-the-badge&logo=github&label=Stars" alt="GitHub Stars">
+  </a>
+  <a href="https://hub.docker.com/r/builderapi/builderpix">
+    <img src="https://img.shields.io/docker/pulls/builderapi/builderpix?style=for-the-badge&logo=docker&label=Pulls" alt="Docker Pulls">
+  </a>
+  <a href="https://github.com/reisdiegoss/builderpix/blob/main/LICENSE">
+    <img src="https://img.shields.io/github/license/reisdiegoss/builderpix?style=for-the-badge&label=Licen%C3%A7a" alt="Licença">
+  </a>
+  <a href="https://builderpix.dominio.com.br">
+    <img src="https://img.shields.io/badge/Site-Acessar-blue?style=for-the-badge&logo=google-chrome&logoColor=white" alt="Acessar o Site">
+  </a>
+</p>
+
+**BuilderPIX** é uma aplicação Node.js completa que oferece uma interface web e uma API RESTful para gerar dinamicamente QR Codes e payloads "Copia e Cola" para transações PIX, seguindo as especificações do Banco Central do Brasil.
+
+---
+
+## ? Funcionalidades
+
+- **Interface Web Intuitiva:** Um frontend simples para preencher os dados e gerar o PIX visualmente.
+- **API RESTful Robusta:** Um endpoint `/api/generate` para integrações, permitindo que outros sistemas gerem códigos PIX.
+- **Geração de QR Code:** Retorna a imagem do QR Code em formato Base64.
+- **Payload "Copia e Cola":** Retorna o payload (BR Code) completo para transações.
+- **Sem Dependências Externas:** A lógica de geração do PIX é totalmente contida na aplicação.
+- **Pronto para Orquestração:** Inclui exemplos para rodar com Docker Swarm e Traefik como proxy reverso.
+
+---
+
+## ?? Como Usar
+
+### 1. Pré-requisitos
+
+- [Node.js](https://nodejs.org/) (v18 ou superior)
+- [Docker](https://www.docker.com/) (para rodar em contêiner)
+
+### 2. Rodando Localmente (Para Desenvolvimento)
+
+Primeiro, clone o repositório:
+```bash
+git clone [https://github.com/reisdiegoss/builderpix.git](https://github.com/reisdiegoss/builderpix.git)
 cd builderpix
-Instale as dependências:npm install
-Inicie o servidor de desenvolvimento:npm start
-A aplicação estará disponível em http://localhost:3000.3. Executando com DockerPara rodar a aplicação de forma simples usando a imagem do Docker Hub:docker run -d -p 3000:3000 --name builderpix builderapi/builderpix:latest
-Após executar o comando, acesse http://localhost:3000 no seu navegador.4. Executando com Docker Swarm e TraefikEsta é a forma recomendada para ambientes de produção, utilizando o Traefik como proxy reverso para gerenciar o tráfego e os certificados SSL.Crie um arquivo docker-stack.yml com o conteúdo abaixo:version: "3.8"
+```
+
+Instale as dependências:
+```bash
+npm install
+```
+
+Inicie o servidor de desenvolvimento:
+```bash
+npm start
+```
+A aplicação estará disponível em `http://localhost:3000`.
+
+### 3. Executando com Docker
+
+Para rodar a aplicação de forma simples usando a imagem do Docker Hub:
+
+```bash
+docker run -d -p 3000:3000 --name builderpix builderapi/builderpix:latest
+```
+Após executar o comando, acesse `http://localhost:3000` no seu navegador.
+
+### 4. Executando com Docker Swarm e Traefik
+
+Esta é a forma recomendada para ambientes de produção, utilizando o Traefik como proxy reverso para gerenciar o tráfego e os certificados SSL.
+
+Crie um arquivo `docker-stack.yml` com o conteúdo abaixo:
+
+```yaml
+version: "3.8"
 
 services:
   builderpix:
@@ -38,8 +108,31 @@ services:
 networks:
   network_public:
     external: true
-Pré-requisitos para o Swarm:Você precisa ter uma instância do Traefik rodando e conectada à rede network_public.A rede network_public deve ser do tipo overlay e ter sido criada previamente.Altere builderpix.dominio.com.br para o seu domínio real.Para implantar a stack, execute:docker stack deploy -c docker-stack.yml builderpix
-Após a implantação, acesse https://builderpix.dominio.com.br no seu navegador.?? API EndpointA aplicação expõe um endpoint principal para a geração do PIX.POST /api/generateGera o BR Code e o QR Code em Base64.Exemplo de requisição com curl:curl -X POST [https://builderpix.dominio.com.br/api/generate](https://builderpix.dominio.com.br/api/generate) \
+```
+
+**Pré-requisitos para o Swarm:**
+- Você precisa ter uma instância do Traefik rodando e conectada à rede `network_public`.
+- A rede `network_public` deve ser do tipo `overlay` e ter sido criada previamente.
+- Altere `builderpix.dominio.com.br` para o seu domínio real.
+
+Para implantar a stack, execute:
+```bash
+docker stack deploy -c docker-stack.yml builderpix
+```
+Após a implantação, acesse `https://builderpix.dominio.com.br` no seu navegador.
+
+---
+
+## ?? API Endpoint
+
+A aplicação expõe um endpoint principal para a geração do PIX.
+
+### `POST /api/generate`
+Gera o BR Code e o QR Code em Base64.
+
+**Exemplo de requisição com `curl`:**
+```bash
+curl -X POST [https://builderpix.dominio.com.br/api/generate](https://builderpix.dominio.com.br/api/generate) \
 -H "Content-Type: application/json" \
 -d '{
   "pixKey": "seu-email@provedor.com",
@@ -48,11 +141,23 @@ Após a implantação, acesse https://builderpix.dominio.com.br no seu navegador.??
   "amount": 19.99,
   "txid": "PEDIDO12345"
 }'
-Exemplo de resposta (Sucesso 200 OK):{
+```
+
+**Exemplo de resposta (Sucesso `200 OK`):**
+```json
+{
   "brcode": "00020126580014BR.GOV.BCB.PIX...",
   "qrCodeBase64": "data:image/png;base64,iVBORw0KGgoAAA..."
 }
-??? DockerfileA imagem é construída utilizando um processo multi-stage para otimização, resultando em uma imagem final leve e segura.# Etapa 1: Base da Construção
+```
+
+---
+
+## ??? Dockerfile
+A imagem é construída utilizando um processo multi-stage para otimização, resultando em uma imagem final leve e segura.
+
+```dockerfile
+# Etapa 1: Base da Construção
 FROM node:18-alpine AS builder
 WORKDIR /usr/src/app
 COPY package*.json ./
@@ -66,4 +171,14 @@ COPY --from=builder /usr/src/app .
 EXPOSE 3000
 USER node
 CMD [ "node", "server.js" ]
-?? ContribuindoContribuições são bem-vindas! Sinta-se à vontade para abrir uma issue ou enviar um pull request.?? LicençaEste projeto está sob a licença MIT. Veja o arquivo LICENSE para mais detalhes.
+```
+
+---
+
+## ?? Contribuindo
+
+Contribuições são bem-vindas! Sinta-se à vontade para abrir uma *issue* ou enviar um *pull request*.
+
+## ?? Licença
+
+Este projeto está sob a licença MIT. Veja o arquivo [LICENSE](LICENSE) para mais detalhes.
