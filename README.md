@@ -9,7 +9,7 @@
     <img src="https://img.shields.io/docker/pulls/builderapi/builderpix?style=for-the-badge&logo=docker&label=Pulls" alt="Docker Pulls">
   </a>
   <a href="https://github.com/reisdiegoss/builderpix/blob/main/LICENSE">
-    <img src="https://img.shields.io/github/license/reisdiegoss/builderpix?style=for-the-badge&label=Licen%C3%A7a" alt="Licença">
+    <img src="https://img.shields.io/badge/License-MIT-yellow?style=for-the-badge" alt="Licença: MIT">
   </a>
   <a href="https://builderpix.builderapi.com.br">
     <img src="https://img.shields.io/badge/Site-Acessar-blue?style=for-the-badge&logo=google-chrome&logoColor=white" alt="Acessar o Site">
