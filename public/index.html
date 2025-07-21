@@ -1,0 +1,189 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>BuilderPIX - Gerador de QR Code PIX</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        body { font-family: 'Inter', sans-serif; }
+        .transition-all { transition: all 0.3s ease-in-out; }
+        .btn-loading { cursor: not-allowed; opacity: 0.7; }
+        .uppercase-input { text-transform: uppercase; }
+    </style>
+</head>
+<body class="bg-gray-100 flex items-center justify-center min-h-screen p-4">
+
+    <div class="w-full max-w-md mx-auto bg-white rounded-2xl shadow-lg overflow-hidden">
+        <div class="p-6 md:p-8">
+            <div class="text-center mb-6">
+                <h1 class="text-2xl md:text-3xl font-bold text-gray-800">BuilderPIX</h1>
+                <p class="text-gray-500 mt-1">Gerador de QR Code PIX Gratuito</p>
+            </div>
+
+            <form id="pixForm" class="space-y-4">
+                <div>
+                    <label for="pixKeyType" class="block text-sm font-medium text-gray-700">Tipo de Chave PIX</label>
+                    <select id="pixKeyType" class="mt-1 block w-full px-3 py-2 border border-gray-300 bg-white rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm">
+                        <option value="aleatoria">Aleatória</option>
+                        <option value="cpf">CPF</option>
+                        <option value="cnpj">CNPJ</option>
+                        <option value="celular">Celular</option>
+                        <option value="email">E-mail</option>
+                    </select>
+                </div>
+
+                <div>
+                    <label for="pixKey" class="block text-sm font-medium text-gray-700">Chave PIX</label>
+                    <input type="text" id="pixKey" required class="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm" placeholder="Insira a chave aqui">
+                </div>
+
+                <div>
+                    <label for="beneficiaryName" class="block text-sm font-medium text-gray-700">Nome do Beneficiário</label>
+                    <input type="text" id="beneficiaryName" required class="uppercase-input mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm" placeholder="SEU NOME COMPLETO">
+                </div>
+
+                <div>
+                    <label for="beneficiaryCity" class="block text-sm font-medium text-gray-700">Cidade do Beneficiário</label>
+                    <input type="text" id="beneficiaryCity" required class="uppercase-input mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm" placeholder="SAO PAULO">
+                </div>
+
+                <div>
+                    <label for="amount" class="block text-sm font-medium text-gray-700">Valor (Opcional)</label>
+                    <input type="text" id="amount" class="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm" placeholder="R$ 0,00">
+                </div>
+
+                <div>
+                    <label for="txid" class="block text-sm font-medium text-gray-700">Código da Transferência (Opcional)</label>
+                    <input type="text" id="txid" class="uppercase-input mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm" placeholder="DEIXE EM BRANCO OU USE UM CÓDIGO">
+                </div>
+
+                <button type="submit" id="submitButton" class="w-full flex justify-center py-3 px-4 border border-transparent rounded-md shadow-sm text-sm font-medium text-white bg-indigo-600 hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500 transition-all">
+                    Gerar QR Code
+                </button>
+                 <p id="errorFeedback" class="text-center text-red-600 font-medium text-sm mt-2 h-4"></p>
+            </form>
+        </div>
+
+        <div id="resultSection" class="hidden bg-gray-50 p-6 md:p-8 border-t border-gray-200">
+            <h2 class="text-xl font-semibold text-center text-gray-800 mb-4">Seu PIX está pronto!</h2>
+            <div class="flex justify-center mb-4 p-4 bg-white rounded-lg shadow-inner">
+                <img id="qrcodeImage" alt="QR Code PIX" class="hidden">
+            </div>
+            <div class="relative">
+                <label for="pixCopyPaste" class="block text-sm font-medium text-gray-700 mb-1">PIX Copia e Cola</label>
+                <textarea id="pixCopyPaste" readonly class="w-full p-2 border border-gray-300 rounded-md bg-gray-100 text-xs text-gray-600 focus:outline-none focus:ring-2 focus:ring-indigo-500" rows="4"></textarea>
+                <button id="copyButton" class="absolute top-7 right-2 bg-indigo-500 text-white px-3 py-1 rounded-md text-xs font-semibold hover:bg-indigo-600 transition-all">
+                    Copiar
+                </button>
+            </div>
+            <p id="copyFeedback" class="text-center text-green-600 font-medium text-sm mt-2 h-4"></p>
+        </div>
+    </div>
+
+    <script>
+        // --- Elementos do DOM ---
+        const pixForm = document.getElementById('pixForm');
+        const submitButton = document.getElementById('submitButton');
+        const errorFeedback = document.getElementById('errorFeedback');
+        const resultSection = document.getElementById('resultSection');
+        const qrcodeImage = document.getElementById('qrcodeImage');
+        const pixCopyPasteTextarea = document.getElementById('pixCopyPaste');
+        const copyButton = document.getElementById('copyButton');
+        const copyFeedback = document.getElementById('copyFeedback');
+        const nameInput = document.getElementById('beneficiaryName');
+        const cityInput = document.getElementById('beneficiaryCity');
+        const amountInput = document.getElementById('amount');
+        const txidInput = document.getElementById('txid');
+
+        // --- Lógica de Formatação dos Inputs ---
+        nameInput.addEventListener('input', (e) => { e.target.value = e.target.value.toUpperCase(); });
+        cityInput.addEventListener('input', (e) => { e.target.value = e.target.value.toUpperCase(); });
+        txidInput.addEventListener('input', (e) => { e.target.value = e.target.value.toUpperCase(); });
+
+        amountInput.addEventListener('input', (e) => {
+            let value = e.target.value.replace(/\D/g, '');
+            if (value === '') {
+                e.target.value = '';
+                return;
+            }
+            value = (parseInt(value, 10) / 100).toFixed(2);
+            e.target.value = new Intl.NumberFormat('pt-BR', { style: 'currency', currency: 'BRL' }).format(value);
+        });
+
+        // --- Lógica de Submissão do Formulário ---
+        pixForm.addEventListener('submit', async (e) => {
+            e.preventDefault();
+            
+            // UI: Limpar resultados e erros anteriores
+            copyFeedback.textContent = '';
+            errorFeedback.textContent = '';
+            resultSection.classList.add('hidden');
+            qrcodeImage.classList.add('hidden');
+            qrcodeImage.src = '';
+
+            submitButton.disabled = true;
+            submitButton.classList.add('btn-loading');
+            submitButton.textContent = 'Gerando...';
+
+            // Coletar dados do formulário
+            const rawAmount = amountInput.value.replace(/\D/g, '');
+            const amount = rawAmount ? (parseInt(rawAmount, 10) / 100) : null;
+
+            const formData = {
+                pixKey: document.getElementById('pixKey').value,
+                beneficiaryName: nameInput.value,
+                beneficiaryCity: cityInput.value,
+                amount: amount,
+                txid: txidInput.value,
+            };
+
+            try {
+                const response = await fetch('/api/generate', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify(formData),
+                });
+
+                const result = await response.json();
+
+                if (!response.ok) {
+                    throw new Error(result.error || 'Falha ao gerar o código.');
+                }
+                
+                // Sucesso: Mostrar os resultados
+                const { brcode, qrCodeBase64 } = result;
+                pixCopyPasteTextarea.value = brcode;
+                qrcodeImage.src = qrCodeBase64;
+                qrcodeImage.classList.remove('hidden');
+                
+                resultSection.classList.remove('hidden');
+                resultSection.scrollIntoView({ behavior: 'smooth' });
+
+            } catch (error) {
+                errorFeedback.textContent = error.message;
+                console.error('Erro na chamada da API:', error);
+            } finally {
+                submitButton.disabled = false;
+                submitButton.classList.remove('btn-loading');
+                submitButton.textContent = 'Gerar QR Code';
+            }
+        });
+
+        // --- Lógica do Botão de Copiar ---
+        copyButton.addEventListener('click', () => {
+            pixCopyPasteTextarea.select();
+            try {
+                document.execCommand('copy');
+                copyFeedback.textContent = 'Copiado com sucesso!';
+                setTimeout(() => { copyFeedback.textContent = ''; }, 2000);
+            } catch (err) {
+                copyFeedback.textContent = 'Falha ao copiar.';
+            }
+        });
+    </script>
+</body>
+</html>
